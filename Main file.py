@@ -30,6 +30,8 @@ p_x = 100
 p_y = 492
 p_speed = 3
 
+is_jump = False
+jump_count = 5
 
 frame = 0
 idle_run = True
@@ -56,6 +58,20 @@ while game_run:
         screen.blit(idle_animation[current_frame], (p_x, p_y))
     else:
         screen.blit(Left_idle_animation[current_frame], (p_x, p_y))
+
+    if not is_jump:
+        if keys[pygame.K_SPACE]:
+            is_jump = True
+    else:
+        if jump_count >= -5:
+            if jump_count > 0:
+                p_y -= (jump_count ** 2) / 2
+            else:
+                p_y += (jump_count ** 2) / 2
+            jump_count -= 1
+        else:
+            is_jump = False
+            jump_count = 5
 
     pygame.display.update()
 
