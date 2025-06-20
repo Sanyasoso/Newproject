@@ -5,7 +5,7 @@ screen = pygame.display.set_mode((700, 500))
 game_run = True
 while game_run:
 
-    screen.blit(pygame.image.load("phon.png"), (0,0))
+    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (0,0))
 
     pygame.display.update()
 
