@@ -28,6 +28,7 @@ last_update = pygame.time.get_ticks() # Время последнего обно
 left_dirrection = False
 p_x = 100
 p_y = 492
+p_speed = 3
 
 
 frame = 0
@@ -46,9 +47,9 @@ while game_run:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_d]:
         left_dirrection = False
-        p_x += 100
+        p_x += p_speed
     elif keys[pygame.K_a]:
-        p_x -= 100
+        p_x -= p_speed
         left_dirrection = True
        
     if not left_dirrection:
