@@ -46,9 +46,9 @@ while game_run:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_d]:
         left_dirrection = False
-        p_x += 3
+        p_x += 100
     elif keys[pygame.K_a]:
-        p_x -= 3
+        p_x -= 100
         left_dirrection = True
        
     if not left_dirrection:
