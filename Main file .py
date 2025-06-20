@@ -25,7 +25,7 @@ current_frame = 0
 animation_speed = 100  # Миллисекунды между кадрами (чем меньше, тем быстрее)
 last_update = pygame.time.get_ticks() # Время последнего обновления кадра
 
-left_dirrection = True
+left_dirrection = False
 p_x = 100
 p_y = 492
 
@@ -51,8 +51,10 @@ while game_run:
         p_x -= 3
         left_dirrection = True
        
-
-    screen.blit(idle_animation[current_frame], (p_x, p_y))
+    if not left_dirrection:
+        screen.blit(idle_animation[current_frame], (p_x, p_y))
+    else:
+        screen.blit(Left_idle_animation[current_frame], (p_x, p_y))
 
     pygame.display.update()
 
