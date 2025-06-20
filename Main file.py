@@ -45,6 +45,9 @@ while game_run:
         last_update = now
         current_frame = (current_frame + 1) % len(idle_animation)
 
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game_run = False
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_d]:
@@ -74,9 +77,5 @@ while game_run:
             jump_count = 5
 
     pygame.display.update()
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            game_run = False
 
 pygame.quit()
