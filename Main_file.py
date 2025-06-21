@@ -1,6 +1,9 @@
 import pygame
+from Newproject.tilemap import blit_the_tile
 from config import screen
 from Player import  player
+import csv
+import tilemap
 
 def show_menu():
     menu_run = True
@@ -46,6 +49,7 @@ game_run = True
 show_menu()
 
 while game_run:
+
     screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (0,0))
 
     now = pygame.time.get_ticks()
@@ -80,10 +84,12 @@ while game_run:
             is_jump = False
             jump_count = 5
 
+    blit_the_tile()
+
     pygame.display.update()
 
-for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            game_run = False
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_run = False
 
 pygame.quit()
