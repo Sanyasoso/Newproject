@@ -2,12 +2,10 @@ import pygame
 from Newproject.tilemap import blit_the_tile
 from config import screen
 from Player import  player
-import csv
-import tilemap
+
 
 def show_menu():
     menu_run = True
-
     phon_menu = pygame.image.load('Sprites/menu/phon_menu.png')
     button = pygame.Surface((200, 100))
     button.fill('blue')
@@ -18,16 +16,16 @@ def show_menu():
         screen.blit(button, button_hbox)
 
         mouse = pygame.mouse.get_pos()
-
         pygame.display.update()
 
         if button_hbox.collidepoint(mouse) and pygame.mouse.get_pressed()[0]:
-            print(';qwef')
             menu_run = False
+            screen.fill((0, 0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame, quit()
+                pygame.quit()
+                pygame.display.flip()
 
 pygame.init()
 
@@ -87,6 +85,7 @@ while game_run:
     blit_the_tile()
 
     pygame.display.update()
+
 
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
