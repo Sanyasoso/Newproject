@@ -2,7 +2,29 @@ import pygame
 from config import screen
 from Player import  player
 
+def show_menu():
+    menu_run = True
 
+    phon_menu = pygame.image.load('Sprites/menu/phon_menu.png')
+    button = pygame.Surface((200, 100))
+    button.fill('blue')
+    button_hbox = button.get_rect(topleft=(245, 200))
+
+    while menu_run:
+        screen.blit((phon_menu), (0, 0))
+        screen.blit(button, button_hbox)
+
+        mouse = pygame.mouse.get_pos()
+
+        pygame.display.update()
+
+        if button_hbox.collidepoint(mouse) and pygame.mouse.get_pressed()[0]:
+            print(';qwef')
+            menu_run = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame, quit()
 
 pygame.init()
 
@@ -21,6 +43,7 @@ frame = 0
 idle_run = True
 game_run = True
 
+show_menu()
 
 while game_run:
     screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (0,0))
@@ -29,12 +52,6 @@ while game_run:
     if now - last_update > animation_speed:
         last_update = now
         current_frame = (current_frame + 1) % len(player.idle_animation)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            game_run = False
-
-
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_d]:
@@ -64,5 +81,9 @@ while game_run:
             jump_count = 5
 
     pygame.display.update()
+
+for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game_run = False
 
 pygame.quit()
