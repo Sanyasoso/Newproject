@@ -22,7 +22,6 @@ def show_menu():
         pygame.display.update()
 
         if button_hbox.collidepoint(mouse) and pygame.mouse.get_pressed()[0]:
-            print(';qwef')
             menu_run = False
 
         for event in pygame.event.get():
