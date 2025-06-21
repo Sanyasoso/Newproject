@@ -1,10 +1,12 @@
 import pygame
+from config import screen
 from Player import  player
+
+
+
 pygame.init()
 
-screen = pygame.display.set_mode((700, 500))
 clock = pygame.time.Clock()
-
 
 current_frame = 0
 animation_speed = 100  # Миллисекунды между кадрами (чем меньше, тем быстрее)
@@ -18,8 +20,9 @@ jump_count = 5
 frame = 0
 idle_run = True
 game_run = True
-while game_run:
 
+
+while game_run:
     screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (0,0))
 
     now = pygame.time.get_ticks()
@@ -30,6 +33,8 @@ while game_run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_run = False
+
+
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_d]:
