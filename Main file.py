@@ -1,34 +1,16 @@
 import pygame
-
+from Player import  player
 pygame.init()
 
 screen = pygame.display.set_mode((700, 500))
 clock = pygame.time.Clock()
 
-idle_animation = [
-    pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle1.png'),
-    pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle2.png'),
-    pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle3.png'),
-    pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle4.png'),
-    pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle5.png'),
-]
-
-Left_idle_animation = [
-    pygame.transform.flip(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle1.png'), True, False),
-    pygame.transform.flip(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle2.png'), True, False),
-    pygame.transform.flip(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle3.png'), True, False),
-    pygame.transform.flip(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle4.png'), True, False),
-    pygame.transform.flip(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle5.png'), True, False)
-]
 
 current_frame = 0
 animation_speed = 100  # Миллисекунды между кадрами (чем меньше, тем быстрее)
 last_update = pygame.time.get_ticks() # Время последнего обновления кадра
 
 left_dirrection = False
-p_x = 100
-p_y = 492
-p_speed = 3
 
 is_jump = False
 jump_count = 5
@@ -43,7 +25,7 @@ while game_run:
     now = pygame.time.get_ticks()
     if now - last_update > animation_speed:
         last_update = now
-        current_frame = (current_frame + 1) % len(idle_animation)
+        current_frame = (current_frame + 1) % len(player.idle_animation)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -52,15 +34,15 @@ while game_run:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_d]:
         left_dirrection = False
-        p_x += p_speed
+        player.p_x += player.p_speed
     elif keys[pygame.K_a]:
-        p_x -= p_speed
+        player.p_x -= player.p_speed
         left_dirrection = True
        
     if not left_dirrection:
-        screen.blit(idle_animation[current_frame], (p_x, p_y))
+        screen.blit(player.idle_animation[current_frame], (player.p_x, player.p_y))
     else:
-        screen.blit(Left_idle_animation[current_frame], (p_x, p_y))
+        screen.blit(player.Left_idle_animation[current_frame], (player.p_x, player.p_y))
 
     if not is_jump:
         if keys[pygame.K_SPACE]:
@@ -68,9 +50,9 @@ while game_run:
     else:
         if jump_count >= -5:
             if jump_count > 0:
-                p_y -= (jump_count ** 2) / 2
+                player.p_y -= (jump_count ** 2) / 2
             else:
-                p_y += (jump_count ** 2) / 2
+                player.p_y += (jump_count ** 2) / 2
             jump_count -= 1
         else:
             is_jump = False
