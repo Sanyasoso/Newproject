@@ -2,9 +2,11 @@ import pygame
 from config import screen
 
 
-Tile01 = pygame.image.load('Sprites/tileset/Tile-01.png')
+Tile01 = pygame.transform.scale(pygame.image.load('Sprites/tileset/Tile-01.png'), (35,35))
 
 TILE_SIZE_Sprite = 8
+TILE_SIZE_Sprite_X = 35
+
 tile_x = 0
 tile_y = 0
 
@@ -27,18 +29,10 @@ def blit_the_tile():
             for char_index, char in enumerate(current_line):
                 if char == '1':  # Если текущий символ - '1'
 
-                    new_tile_x = char_index * TILE_SIZE_Sprite  # Позиция X зависит от индекса символа
+                    new_tile_x = char_index * TILE_SIZE_Sprite_X  # Позиция X зависит от индекса символа
                     new_tile_y = index_line * TILE_SIZE_Sprite  # Позиция Y зависит от индекса строки
 
                     screen.blit(Tile01, (new_tile_x, new_tile_y))
-
-
-
-
-
-
-
-
 
 
 

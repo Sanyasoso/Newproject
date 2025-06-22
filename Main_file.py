@@ -27,6 +27,8 @@ while game_run:
 
     screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 0, 0))
     screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 700, 0))
+    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 0, 300))
+    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 700, 300))
 
     now = pygame.time.get_ticks()
     if now - last_update > animation_speed:
@@ -50,7 +52,6 @@ while game_run:
             if player.x > 0:
                 player.x -= player.speed
 
-
     if not left_dirrection:
         screen.blit(player.idle_animation[current_frame], (player.x, player.y))
     else:
@@ -73,11 +74,8 @@ while game_run:
     if phon_x <= -576:
         phon_x = 0
 
-
-
     blit_the_tile()
     pygame.display.update()
-
 
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
