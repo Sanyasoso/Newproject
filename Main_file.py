@@ -1,31 +1,8 @@
 import pygame
-from Newproject.tilemap import blit_the_tile
+from tilemap import blit_the_tile
 from config import screen
 from Player import  player
-
-
-def show_menu():
-    menu_run = True
-    phon_menu = pygame.image.load('Sprites/menu/phon_menu.png')
-    button = pygame.Surface((200, 100))
-    button.fill('blue')
-    button_hbox = button.get_rect(topleft=(245, 200))
-
-    while menu_run:
-        screen.blit((phon_menu), (0, 0))
-        screen.blit(button, button_hbox)
-
-        mouse = pygame.mouse.get_pos()
-        pygame.display.update()
-
-        if button_hbox.collidepoint(mouse) and pygame.mouse.get_pressed()[0]:
-            menu_run = False
-            screen.fill((0, 0, 0))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                pygame.display.flip()
+from menu import show_menu
 
 pygame.init()
 
@@ -38,17 +15,18 @@ last_update = pygame.time.get_ticks() # Время последнего обно
 left_dirrection = False
 
 is_jump = False
-jump_count = 5
 
 frame = 0
 idle_run = True
 game_run = True
 
-show_menu()
+show_menu(screen)
 
+phon_x = 0
 while game_run:
 
-    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (0,0))
+    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 0, 0))
+    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 700, 0))
 
     now = pygame.time.get_ticks()
     if now - last_update > animation_speed:
@@ -58,29 +36,43 @@ while game_run:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_d]:
         left_dirrection = False
-        player.p_x += player.p_speed
+        #player.x += player.speed
+        if player.x >= ((800 / 2) - player.size_x):
+            phon_x -= player.speed
+            print(phon_x)
+        else:
+            player.x += player.speed
     elif keys[pygame.K_a]:
-        player.p_x -= player.p_speed
         left_dirrection = True
-       
+        if phon_x < 0:
+            #player.x -= player.speed
+            phon_x += player.speed
+        else:
+            if player.x > 0:
+                player.x -= player.speed
+
+
     if not left_dirrection:
-        screen.blit(player.idle_animation[current_frame], (player.p_x, player.p_y))
+        screen.blit(player.idle_animation[current_frame], (player.x, player.y))
     else:
-        screen.blit(player.Left_idle_animation[current_frame], (player.p_x, player.p_y))
+        screen.blit(player.Left_idle_animation[current_frame], (player.x, player.y))
 
     if not is_jump:
         if keys[pygame.K_SPACE]:
             is_jump = True
     else:
-        if jump_count >= -5:
-            if jump_count > 0:
-                player.p_y -= (jump_count ** 2) / 2
+        if player.jump_count >= -player.jump_high:
+            if player.jump_count > 0:
+                player.y -= (player.jump_count ** 2) / 2
             else:
-                player.p_y += (jump_count ** 2) / 2
-            jump_count -= 1
+                player.y += (player.jump_count ** 2) / 2
+            player.jump_count -= 1
         else:
             is_jump = False
-            jump_count = 5
+            player.jump_count = player.jump_high
+
+    if phon_x <= -576:
+        phon_x = 0
 
     blit_the_tile()
 
