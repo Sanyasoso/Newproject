@@ -74,8 +74,9 @@ while game_run:
     if phon_x <= -576:
         phon_x = 0
 
-    blit_the_tile()
 
+
+    blit_the_tile()
     pygame.display.update()
 
 
