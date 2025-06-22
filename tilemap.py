@@ -1,6 +1,5 @@
 import csv
 import pygame
-from pygame.examples.grid import TILE_SIZE
 from config import screen
 
 
