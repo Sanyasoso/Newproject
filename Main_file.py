@@ -39,7 +39,6 @@ while game_run:
         #player.x += player.speed
         if player.x >= ((800 / 2) - player.size_x):
             phon_x -= player.speed
-            print(phon_x)
         else:
             player.x += player.speed
     elif keys[pygame.K_a]:
