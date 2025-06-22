@@ -1,33 +1,27 @@
-import csv
 import pygame
 from config import screen
 
 
 Tile01 = pygame.image.load('Sprites/tileset/Tile-01.png')
 TILE_SIZE_Sprite = 8
+tile_x = 0
+tile_y = 0
+
 def blit_the_tile():
-    with open('Sprites/tilemap/tilemap..csv', 'r', newline='') as file:
-        reader = csv.reader(file)
+    global tile_x, tile_y
+    with open('Sprites/tilemap/map.txt.txt', 'r') as mapfile:
+        readfile = mapfile.readlines()
 
-        row_index = 0
-        for row in reader:
-            col_index = 0
-            for tile_value in row:
-                try:
-                   tile_index = tile_value.find('0')
-                   if tile_index:
-                        move_tile_x = col_index * TILE_SIZE_Sprite
-                        move_tile_y = row_index * TILE_SIZE_Sprite
-                        screen.blit(Tile01, (move_tile_x, move_tile_y))
+        for index_line, current_line in enumerate(readfile):
+            current_line = current_line.strip()
+            if '1' in current_line:
 
-                   else:
-                        print(f"Некорректный индекс тайла: {tile_index} Пропускаем.")
-                except ValueError:
-                    print(f"Некорректное значение тайла: {tile_value}. Пропускаем.")
+               new_tile_x = tile_x * TILE_SIZE_Sprite
+               new_tile_y = tile_y * TILE_SIZE_Sprite
 
-                col_index += 1  # Переходим к следующему столбцу
-            row_index += 1  # Переходим к следующей строке
-            break
+               screen.blit(Tile01, (new_tile_x, new_tile_y))
+
+               tile_x += 1
 
 
 
