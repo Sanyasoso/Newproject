@@ -22,13 +22,20 @@ game_run = True
 
 show_menu(screen)
 
+scroll_x = 0
+scroll_y = 0
+
 phon_x = 0
+phon_y = 0
 while game_run:
 
-    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 0, 0))
-    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 700, 0))
-    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 0, 300))
-    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 700, 300))
+    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 0,phon_y - 100))
+    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 700,phon_y - 100))
+    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 0,phon_y + 200))
+    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 700,phon_y + 200))
+
+    player_collision = player.idle_animation[0].get_rect(topleft=(player.x,player.y))
+
 
     now = pygame.time.get_ticks()
     if now - last_update > animation_speed:
@@ -41,6 +48,7 @@ while game_run:
         #player.x += player.speed
         if player.x >= ((800 / 2) - player.size_x):
             phon_x -= player.speed
+            scroll_x += player.speed
         else:
             player.x += player.speed
     elif keys[pygame.K_a]:
@@ -48,6 +56,7 @@ while game_run:
         if phon_x < 0:
             #player.x -= player.speed
             phon_x += player.speed
+            scroll_x -= player.speed
         else:
             if player.x > 0:
                 player.x -= player.speed
@@ -63,9 +72,11 @@ while game_run:
     else:
         if player.jump_count >= -player.jump_high:
             if player.jump_count > 0:
-                player.y -= (player.jump_count ** 2) / 2
+                scroll_y -= (player.jump_count ** 2) / 2
+                phon_y += (player.jump_count ** 2) / 2
             else:
-                player.y += (player.jump_count ** 2) / 2
+                scroll_y += (player.jump_count ** 2) / 2
+                phon_y -= (player.jump_count ** 2) / 2
             player.jump_count -= 1
         else:
             is_jump = False
@@ -74,7 +85,7 @@ while game_run:
     if phon_x <= -576:
         phon_x = 0
 
-    blit_the_tile()
+    blit_the_tile(scroll_x + 100, scroll_y)
     pygame.display.update()
 
     for event in pygame.event.get():

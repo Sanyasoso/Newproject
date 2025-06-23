@@ -23,5 +23,3 @@ class player:
         pygame.transform.scale(pygame.transform.flip(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle4.png'), True, False), (size_x,size_y)),
         pygame.transform.scale(pygame.transform.flip(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle5.png'), True, False), (size_x,size_y))
     ]
-
-
