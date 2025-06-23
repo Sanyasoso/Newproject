@@ -1,4 +1,6 @@
 import pygame
+from Newproject.config import GRAVITY
+
 
 class player:
     size_x = 50
@@ -8,6 +10,8 @@ class player:
     speed = 3
     jump_high = 8
     jump_count = jump_high
+    self_y = 0 #начальная скорость
+    player_collision = pygame.Rect(x, y, size_x, size_y)
     idle_animation = [
         pygame.transform.scale(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle1.png'), (size_x,size_y)),
         pygame.transform.scale(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle2.png'), (size_x,size_y)),
@@ -23,3 +27,6 @@ class player:
         pygame.transform.scale(pygame.transform.flip(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle4.png'), True, False), (size_x,size_y)),
         pygame.transform.scale(pygame.transform.flip(pygame.image.load('Sprites/Animation/Idle_anim/Playersprite_idle5.png'), True, False), (size_x,size_y))
     ]
+
+
+
