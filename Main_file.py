@@ -27,12 +27,15 @@ scroll_y = 0
 
 phon_x = 0
 phon_y = 0
+
+phon_load = pygame.image.load("Sprites/Bg/phon.png")
+
 while game_run:
 
-    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 0,phon_y - 100))
-    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 700,phon_y - 100))
-    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 0,phon_y + 200))
-    screen.blit(pygame.image.load("Sprites/Bg/phon.png"), (phon_x + 700,phon_y + 200))
+    screen.blit(phon_load, (phon_x + 0, phon_y - 100))
+    screen.blit(phon_load, (phon_x + 700, phon_y - 100))
+    screen.blit(phon_load, (phon_x + 0, phon_y + 200))
+    screen.blit(phon_load, (phon_x + 700, phon_y + 200))
 
     player_collision = player.idle_animation[0].get_rect(topleft=(player.x,player.y))
 
@@ -91,5 +94,7 @@ while game_run:
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_run = False
+
+    clock.tick(60)
 
 pygame.quit()
