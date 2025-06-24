@@ -39,8 +39,8 @@ def blit_the_tile(scroll_x, scroll_y):
                     tile_rect = pygame.Rect(new_tile_x, new_tile_y, TILE_SIZE_Sprite_X * 8, TILE_SIZE_Sprite * 8)
 
 
-                    if new_player_collisions.colliderect(tile_rect):
-                        print('osos')
+                   # if new_player_collisions.colliderect(tile_rect):
+
 
                     screen.blit(Tile01, (new_tile_x, new_tile_y))
                     pygame.draw.rect(screen, (255, 0, 0), rect=tile_rect)
