@@ -1,102 +1,57 @@
 import pygame
 from tilemap import blit_the_tile
-from config import screen
-from Player import player  # Исправлено: импортируем класс player
-from menu import show_menu
+from config import screen, WIDTH, HEIGHT, FPS
+from Player import Player
 
 pygame.init()
-
 clock = pygame.time.Clock()
 
-current_frame = 0
-animation_speed = 100  # Миллисекунды между кадрами (чем меньше, тем быстрее)
-last_update = pygame.time.get_ticks()  # Время последнего обновления кадра
+# Создаем экземпляр игрока
+player = Player(100, 100, 35, 35)  # Начальная позиция и размеры
 
-left_dirrection = False
+# Гравитация и другие константы перенесены в класс Player
 
+# Загрузка карты (предполагается, что у вас есть функция load_map)
+# map_data = load_map("Sprites/tilemap/map.txt.txt")
 
-frame = 0
-idle_run = True
-game_run = True
-
-show_menu(screen)
-
+# Основной цикл игры
+running = True
 scroll_x = 0
-scroll_y = 0
-
-phon_x = 0
-phon_y = 0
-
-player1 = player()  # Исправлено: Создаем экземпляр класса player
-
-phon_load = pygame.image.load("Sprites/Bg/phon.png")
-
-while game_run:
-    player1.update()  # Исправлено: Вызываем update() правильно
-    screen.blit(phon_load, (phon_x + 0, phon_y - 100))
-    screen.blit(phon_load, (phon_x + 700, phon_y - 100))
-    screen.blit(phon_load, (phon_x + 0, phon_y + 200))
-    screen.blit(phon_load, (phon_x + 700, phon_y + 200))
-
-    # player_collision = player.idle_animation[0].get_rect(topleft=(player.x,player.y))
-
-    now = pygame.time.get_ticks()
-    if now - last_update > animation_speed:
-        last_update = now
-        current_frame = (current_frame + 1) % len(player1.idle_animation)
-
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_d]:
-        left_dirrection = False
-        # player.x += player.speed
-        if player1.x >= ((800 / 2) - player1.size_x):
-            phon_x -= player.speed  # Заменили player на player1
-            scroll_x += player.speed
-        else:
-            player1.x += player1.speed
-    elif keys[pygame.K_a]:
-        left_dirrection = True
-        if phon_x < 0:
-            # player.x -= player.speed
-            phon_x += player1.speed
-            scroll_x -= player1.speed
-        else:
-            if player1.x > 0:
-                player1.x -= player.speed #Заменили player на player1
-
-    if not left_dirrection:
-        screen.blit(player1.idle_animation[current_frame], (player1.x, player1.y))
-    else:
-        screen.blit(player1.Left_idle_animation[current_frame], (player1.x, player1.y))
-
-    if not player1.is_jumping: #Исправили is_jump на is_jumping
-        if keys[pygame.K_SPACE]:
-            player1.in_is_jump()
-
-    else:
-        if player1.jump_count >= -player1.jump_high:
-            if player1.jump_count > 0:
-                scroll_y -= (player1.jump_count * 2) / 2
-                phon_y += (player1.jump_count * 2) / 2
-            else:
-                scroll_y += (player1.jump_count * 2) / 2
-                phon_y -= (player1.jump_count * 2) / 2
-            player1.jump_count -= 1
-        else:
-            player1.is_jumping = False  #Исправили is_jump на is_jumping
-            player1.jump_count = player1.jump_high
-
-    if phon_x <= -576:
-        phon_x = 0
-
-    blit_the_tile(scroll_x + 100, scroll_y)
-    pygame.draw.rect(screen, color=(0, 255, 0), rect=player1.player_collision)  # отображение колизии игрока Временно
-    pygame.display.update()
-
+scroll_y = 0  # Инициализация scroll_y
+while running:
+    # Обработка событий
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            game_run = False
+            running = False
+        # Добавьте другие обработчики событий, если необходимо
 
-    clock.tick(60)
+    # Обработка ввода
+    keys = pygame.key.get_pressed()
+    player.handle_input(keys)
+
+    # Обновление игрока (физика)
+    player.update()
+
+    # Скроллинг камеры (центрируем на игроке)
+    scroll_x = player.x - WIDTH // 2
+    #scroll_y = player.y - HEIGHT // 2 #Удаляем, он нам мешает
+
+    # Отрисовка
+    screen.fill((135, 206, 235))  # Небесный фон
+
+    # Отрисовка тайлов
+    blit_the_tile(scroll_x, scroll_y, player)
+
+    # Отрисовка игрока (debug)
+    pygame.draw.rect(screen, (255, 255, 255), player.rect, 2)
+
+        # Вывод отладочной информации
+    #print(f"on_ground: {player.on_ground}, is_jumping: {player.is_jumping}, velocity_y: {player.velocity_y}")
+
+    # Обновление экрана
+    pygame.display.flip()
+
+    # Контроль FPS
+    clock.tick(FPS)
 
 pygame.quit()

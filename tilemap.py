@@ -1,47 +1,54 @@
 import pygame
 from config import screen
-from Player import player
+from Player import Player
+
+# Константы (определяем размеры тайла один раз)
+TILE_SIZE = 35  # Размер тайла (предполагаю, что он квадратный)
+
+# Загружаем текстуру тайла (делаем это один раз)
+TILE_IMAGE = pygame.transform.scale(pygame.image.load('Sprites/tileset/Tile-01.png'), (TILE_SIZE, TILE_SIZE))
 
 
-Tile01 = pygame.transform.scale(pygame.image.load('Sprites/tileset/Tile-01.png'), (35,35))
-
-TILE_SIZE_Sprite = 7.95
-TILE_SIZE_Sprite_X = 35
-
-new_player_collisions = player.player_collision
-
-
-tile_x = 0
-tile_y = 0
-
-def blit_the_tile(scroll_x, scroll_y):
-    global tile_x, tile_y
-
-    tile_x = 0
-    tile_y = 0
+def blit_the_tile(scroll_x, scroll_y, player):  # Передаем player как аргумент
 
     with open('Sprites/tilemap/map.txt.txt', 'r') as mapfile:
-        readfile = mapfile.readlines()
+        # Читаем карту из файла (предполагается, что файл не очень большой)
+        map_data = [line.strip() for line in mapfile.readlines()]
 
-        for index_line, current_line in enumerate(readfile):
-            current_line = current_line.strip()
+    # Сбрасываем флаг "на земле" перед каждой проверкой
+    player.on_ground = False
 
-            # tile_x сбрасывается в начале каждой строки
-            tile_x = 0
+    # Перебираем строки карты
+    for row_index, row in enumerate(map_data):
+        # Перебираем символы в строке
+        for col_index, tile_type in enumerate(row):
+            if tile_type == '1':  # Если текущий символ - '1' (тайл)
+                # Вычисляем координаты тайла на экране с учетом скроллинга
+                tile_x = (col_index * TILE_SIZE) - scroll_x
+                tile_y = (row_index * TILE_SIZE) - scroll_y
 
-            # Итерируемся по символам в строке для отрисовки тайлов в каждой позиции
-            for char_index, char in enumerate(current_line):
-                if char == '1':  # Если текущий символ - '1'
+                # Создаем прямоугольник для тайла (используем константу TILE_SIZE)
+                tile_rect = pygame.Rect(tile_x, tile_y, TILE_SIZE, TILE_SIZE)
 
-                    new_tile_x = (char_index * TILE_SIZE_Sprite_X) - scroll_x  # Позиция X зависит от индекса символа
-                    new_tile_y = (index_line * TILE_SIZE_Sprite) - scroll_y  # Позиция Y зависит от индекса строки
+                # Проверяем столкновение с игроком
+                if player.rect.colliderect(tile_rect):
 
-                    tile_rect = pygame.Rect(new_tile_x, new_tile_y, TILE_SIZE_Sprite_X * 8, TILE_SIZE_Sprite * 8)
+                    # Обработка столкновения (сверху)
+                    if player.velocity_y > 0 and player.rect.bottom > tile_rect.top:
+                        player.rect.bottom = tile_rect.top
+                        player.y = player.rect.y # Обновляем позицию y игрока
+                        player.velocity_y = 0
+                        player.on_ground = True
+
+                    #Обработка столкновения (снизу)
+                    elif player.velocity_y < 0 and player.rect.top < tile_rect.bottom:
+                        player.rect.top = tile_rect.bottom
+                        player.y = player.rect.y
+                        player.velocity_y = 0
 
 
-                   # if new_player_collisions.colliderect(tile_rect):
+                # Отрисовываем тайл
+                screen.blit(TILE_IMAGE, tile_rect)
 
-
-                    screen.blit(Tile01, (new_tile_x, new_tile_y))
-                    pygame.draw.rect(screen, (255, 0, 0), rect=tile_rect)
-
+                # Отрисовываем прямоугольник для отладки (можно убрать в финальной версии)
+                pygame.draw.rect(screen, (255, 0, 0), tile_rect, 1)  # Ширина 1 для отображения контура
