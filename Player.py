@@ -37,18 +37,18 @@ class Player:
         # Обработка движения
         if keys[pygame.K_d]:
             self.left_direction = False
-            self.x += self.speed - self.velocity_x_r
+            self.x = self.rect_x[0] + self.speed - self.velocity_x_r
         elif keys[pygame.K_a]:
             self.left_direction = True
-            self.x -= self.speed - self.velocity_x_l
+            self.x = self.rect_x[0] - self.speed - self.velocity_x_l
 
             # Обработка прыжка
         if not self.is_jumping and self.on_ground and keys[pygame.K_SPACE]:
             self.start_jump()
             self.is_jumping = False
 
-        self.rect.x = self.x
-        self.rect_x.x = self.x - 2
+        #self.rect.x = self.x
+        #self.rect_x.x = self.x - 2
         #self.rect.y = self.y  #  не трогаем rect.y здесь
 
     def start_jump(self):

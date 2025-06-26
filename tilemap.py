@@ -33,16 +33,21 @@ def blit_the_tile(scroll_x, scroll_y, player):  # Передаем player как
 
                 # Проверяем столкновение с игроком
                 if player.rect_x.colliderect(tile_rect):
-                    if player.rect_x.right > tile_rect.left and player.rect_x.left < tile_rect.left:
+                    if player.rect_x.right > tile_rect.left and player.rect_x.right < tile_rect.right:
                         player.rect_x.right = tile_rect.left - 1
+                        player.rect_x.right -= 1
                         player.rect.left = player.rect_x.left
                         player.velocity_x_r = player.speed
 
 
-                    elif player.rect_x.left < tile_rect.right and player.rect_x.right > tile_rect.right:
+                    elif player.rect_x.left < tile_rect.right and player.rect_x.left > tile_rect.left:
                         player.rect_x.left = tile_rect.right + 1
+                        player.rect_x.left += 1
                         player.rect.right = player.rect_x.right
                         player.velocity_x_l = player.speed
+                else:
+                    player.velocity_x_r = 0
+                    player.velocity_x_l = 0
 
                 if player.rect.colliderect(tile_rect):
 
