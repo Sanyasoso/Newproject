@@ -35,9 +35,9 @@ while running:
     # Скроллинг камеры (центрируем на игроке)
     scroll_x = WIDTH // 2
     if keys[pygame.K_d]:
-        WIDTH += player.speed - player.velocity_x_r
+        WIDTH += player.rect_x[0]
     elif keys[pygame.K_a]:
-        WIDTH -= player.speed - player.velocity_x_l
+        WIDTH -= player.rect_x[0]
 
     # Отрисовка
     screen.fill((135, 206, 235))  # Небесный фон
