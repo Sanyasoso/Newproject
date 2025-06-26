@@ -1,13 +1,13 @@
 import pygame
 from tilemap import blit_the_tile
-from config import screen, WIDTH, HEIGHT, FPS
+from config import screen, WIDTH, FPS
 from Player import Player
 
 pygame.init()
 clock = pygame.time.Clock()
 
 # Создаем экземпляр игрока
-player = Player(100, 100, 35, 35)  # Начальная позиция и размеры
+player = Player(380, 100, 35, 35)  # Начальная позиция и размеры
 
 # Гравитация и другие константы перенесены в класс Player
 
@@ -33,8 +33,11 @@ while running:
     player.update()
 
     # Скроллинг камеры (центрируем на игроке)
-    scroll_x = player.x - WIDTH // 2
-    #scroll_y = player.y - HEIGHT // 2 #Удаляем, он нам мешает
+    scroll_x = WIDTH // 2
+    if keys[pygame.K_d]:
+        WIDTH += player.speed - player.velocity_x_r
+    elif keys[pygame.K_a]:
+        WIDTH -= player.speed - player.velocity_x_l
 
     # Отрисовка
     screen.fill((135, 206, 235))  # Небесный фон
@@ -43,7 +46,8 @@ while running:
     blit_the_tile(scroll_x, scroll_y, player)
 
     # Отрисовка игрока (debug)
-    pygame.draw.rect(screen, (255, 255, 255), player.rect, 2)
+    pygame.draw.rect(screen, (255, 255, 255), player.rect, 1)
+    pygame.draw.rect(screen, (255, 0, 0), player.rect_x, 1)
 
         # Вывод отладочной информации
     #print(f"on_ground: {player.on_ground}, is_jumping: {player.is_jumping}, velocity_y: {player.velocity_y}")

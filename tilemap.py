@@ -1,6 +1,7 @@
 import pygame
+
 from config import screen
-from Player import Player
+
 
 # Константы (определяем размеры тайла один раз)
 TILE_SIZE = 35  # Размер тайла (предполагаю, что он квадратный)
@@ -31,6 +32,18 @@ def blit_the_tile(scroll_x, scroll_y, player):  # Передаем player как
                 tile_rect = pygame.Rect(tile_x, tile_y, TILE_SIZE, TILE_SIZE)
 
                 # Проверяем столкновение с игроком
+                if player.rect_x.colliderect(tile_rect):
+                    if player.rect_x.right > tile_rect.left and player.rect_x.left < tile_rect.left:
+                        player.rect_x.right = tile_rect.left - 1
+                        player.rect.left = player.rect_x.left
+                        player.velocity_x_r = player.speed
+
+
+                    elif player.rect_x.left < tile_rect.right and player.rect_x.right > tile_rect.right:
+                        player.rect_x.left = tile_rect.right + 1
+                        player.rect.right = player.rect_x.right
+                        player.velocity_x_l = player.speed
+
                 if player.rect.colliderect(tile_rect):
 
                     # Обработка столкновения (сверху)
@@ -39,6 +52,7 @@ def blit_the_tile(scroll_x, scroll_y, player):  # Передаем player как
                         player.y = player.rect.y # Обновляем позицию y игрока
                         player.velocity_y = 0
                         player.on_ground = True
+
 
                     #Обработка столкновения (снизу)
                     elif player.velocity_y < 0 and player.rect.top < tile_rect.bottom:
@@ -51,4 +65,4 @@ def blit_the_tile(scroll_x, scroll_y, player):  # Передаем player как
                 screen.blit(TILE_IMAGE, tile_rect)
 
                 # Отрисовываем прямоугольник для отладки (можно убрать в финальной версии)
-                pygame.draw.rect(screen, (255, 0, 0), tile_rect, 1)  # Ширина 1 для отображения контура
+                pygame.draw.rect(screen, (0, 0, 0), tile_rect, 1)  # Ширина 1 для отображения контура
